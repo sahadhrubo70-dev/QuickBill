@@ -22,7 +22,7 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 80mm; /* স্ট্যান্ডার্ড রসিদ সাইজ */
+                width: 80mm; 
                 padding: 10px;
                 background: white;
             }
@@ -30,7 +30,7 @@
                 display: none !important;
             }
         }
-        /* কাস্টম স্ক্রলবার */
+        
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -53,65 +53,65 @@
         <div id="login-card" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-100 transition-all">
             <div class="text-center mb-8">
                 <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase">POS PRO v2.0</span>
-                <h2 class="text-3xl font-bold text-slate-900 mt-2">লগইন করুন</h2>
-                <p class="text-sm text-slate-500 mt-1">আপনার অ্যাকাউন্ট ম্যানেজ করতে সাইন-ইন করুন</p>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Log in</h2>
+                <p class="text-sm text-slate-500 mt-1">Sign in your account </p>
             </div>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">ইউজারনেম</label>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Username</label>
                     <input type="text" id="login-username" class="w-full border border-slate-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Username">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">পাসওয়ার্ড</label>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Password</label>
                     <input type="password" id="login-password" class="w-full border border-slate-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="••••••••">
                 </div>
-                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md shadow-indigo-200">প্রবেশ করুন</button>
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white p-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md shadow-indigo-200">Enter now</button>
             </div>
             <div class="text-center mt-6">
-                <p class="text-sm text-slate-600">নতুন ব্যবসা? <button onclick="toggleAuth(false)" class="text-indigo-600 font-semibold hover:underline">নতুন অ্যাকাউন্ট তৈরি করুন</button></p>
+                <p class="text-sm text-slate-600">New Business? <button onclick="toggleAuth(false)" class="text-indigo-600 font-semibold hover:underline">Create a new account</button></p>
             </div>
         </div>
 
         <div id="signup-card" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-100 hidden transition-all">
             <div class="text-center mb-6">
                 <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase">Registration</span>
-                <h2 class="text-3xl font-bold text-slate-900 mt-2">সাইন আপ</h2>
-                <p class="text-sm text-slate-500 mt-1">সফটওয়্যারটি ব্যবহারের জন্য আপনার ব্যবসা রেজিস্টার করুন</p>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Sign up</h2>
+                <p class="text-sm text-slate-500 mt-1">Use this software registrate your business</p>
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">কোম্পানি/ব্যবসার নাম</label>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Company/Shop Name</label>
                     <input type="text" id="reg-company" class="w-full border border-slate-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition text-sm" placeholder="যেমন: আল-মদিনা স্টোর">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">কোম্পানি লোগো লিংক (URL)</label>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Logo Link (URL)</label>
                     <input type="text" id="reg-logo" class="w-full border border-slate-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition text-sm" placeholder="https://example.com/logo.png">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">ক্যাটাগরি</label>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Category</label>
                     <input type="text" id="reg-category" class="w-full border border-slate-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition text-sm" placeholder="যেমন: সুপারশপ / গ্রোসারি">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">ইউজারনেম</label>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Username</label>
                         <input type="text" id="reg-username" class="w-full border border-slate-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition text-sm" placeholder="Username">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">পাসওয়ার্ড</label>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Password</label>
                         <input type="password" id="reg-password" class="w-full border border-slate-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition text-sm" placeholder="••••••••">
                     </div>
                 </div>
                 <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 flex items-center justify-between">
                     <div>
                         <span id="captcha-display" class="font-mono text-xl font-bold tracking-widest bg-slate-200 text-slate-700 px-3 py-1 rounded select-none line-through decoration-indigo-500 decoration-2">9F2A</span>
-                        <button onclick="generateCaptcha()" type="button" class="ml-2 text-xs text-indigo-500 hover:underline">রিলোড</button>
+                        <button onclick="generateCaptcha()" type="button" class="ml-2 text-xs text-indigo-500 hover:underline">Reload</button>
                     </div>
                     <input type="text" id="captcha-input" class="w-24 border border-slate-200 p-1.5 rounded text-center font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm" placeholder="Captcha">
                 </div>
                 <button onclick="handleSignup()" class="w-full bg-emerald-600 text-white p-2.5 rounded-lg font-semibold hover:bg-emerald-700 transition shadow-md shadow-emerald-200 text-sm">রেজিস্ট্রেশন সম্পূর্ণ করুন</button>
             </div>
             <div class="text-center mt-4">
-                <p class="text-xs text-slate-600">আগে থেকেই অ্যাকাউন্ট আছে? <button onclick="toggleAuth(true)" class="text-indigo-600 font-semibold hover:underline">লগইন করুন</button></p>
+                <p class="text-xs text-slate-600">Already have an account<button onclick="toggleAuth(true)" class="text-indigo-600 font-semibold hover:underline">Login</button></p>
             </div>
         </div>
     </div>
@@ -123,24 +123,24 @@
             <div class="p-6 border-b border-slate-800 flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white text-lg" id="app-logo-initial">P</div>
                 <div>
-                    <h2 class="font-bold text-white leading-tight truncate w-36" id="app-company-name">আমার কোম্পানি</h2>
+                    <h2 class="font-bold text-white leading-tight truncate w-36" id="app-company-name">My Comapny/Shop</h2>
                     <span class="text-xs text-slate-500" id="app-username">User: Admin</span>
                 </div>
             </div>
             <nav class="flex-grow p-4 space-y-1">
                 <button onclick="switchTab('tab-pos')" id="btn-tab-pos" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium bg-indigo-600 text-white transition">
-                    <span>🛒</span> <span>পয়েন্ট অব সেল (POS)</span>
+                    <span>🛒</span> <span>Point of Sale (POS)</span>
                 </button>
                 <button onclick="switchTab('tab-inventory')" id="btn-tab-inventory" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition">
-                    <span>📦</span> <span>ইনভেন্টরি ম্যানেজমেন্ট</span>
+                    <span>📦</span> <span>Inventory Management</span>
                 </button>
                 <button onclick="switchTab('tab-statement')" id="btn-tab-statement" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition">
-                    <span>📊</span> <span>অ্যাকাউন্টস ও স্টেটমেন্ট</span>
+                    <span>📊</span> <span>Accounts & Statement</span>
                 </button>
             </nav>
             <div class="p-4 border-t border-slate-800">
                 <button onclick="handleLogout()" class="w-full flex items-center justify-center space-x-2 bg-red-950/40 text-red-400 hover:bg-red-900/50 p-2.5 rounded-lg text-sm font-medium transition">
-                    <span>🚪</span> <span>লগআউট করুন</span>
+                    <span>🚪</span> <span>Logout</span>
                 </button>
             </div>
         </aside>
@@ -150,49 +150,49 @@
             <div id="tab-pos" class="tab-content space-y-6">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h1 class="text-2xl font-bold text-slate-900">পয়েন্ট অব সেল (POS)</h1>
-                        <p class="text-sm text-slate-500">গ্রাহকদের জন্য দ্রুত ই-বিল তৈরি করুন</p>
+                        <h1 class="text-2xl font-bold text-slate-900">(POS)</h1>
+                        <p class="text-sm text-slate-500">Generate</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 space-y-6">
                         <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                            <h3 class="font-bold text-slate-800 border-b pb-2 text-sm uppercase tracking-wider">কার্ট এ পণ্য যোগ করুন</h3>
+                            <h3 class="font-bold text-slate-800 border-b pb-2 text-sm uppercase tracking-wider">Add to Cart</h3>
                             <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
                                 <div class="sm:col-span-6">
-                                    <label class="block text-xs font-semibold text-slate-600 mb-1">পণ্য নির্বাচন করুন</label>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Select Product</label>
                                     <select id="bill-product-select" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
                                 </div>
                                 <div class="sm:col-span-3">
-                                    <label class="block text-xs font-semibold text-slate-600 mb-1">বিক্রি পরিমাণ (Qty)</label>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Quantity</label>
                                     <input type="number" id="bill-qty-input" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="যেমন: 5">
                                 </div>
                                 <div class="sm:col-span-3 flex items-end">
-                                    <button onclick="addToCart()" class="w-full bg-indigo-600 text-white p-2.5 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition">কার্ট যোগ</button>
+                                    <button onclick="addToCart()" class="w-full bg-indigo-600 text-white p-2.5 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition">Add Cart</button>
                                 </div>
                             </div>
                         </div>
 
                         <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
                             <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-                                <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider">রানিং অর্ডার আইটেম</h3>
-                                <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold" id="cart-item-count">০ টি আইটেম</span>
+                                <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider">Running Order Item</h3>
+                                <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold" id="cart-item-count">0 Product</span>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left text-sm">
                                     <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
                                         <tr>
-                                            <th class="p-4">পণ্যের নাম</th>
-                                            <th class="p-4">পরিমাণ</th>
-                                            <th class="p-4">মূল্য (একক)</th>
-                                            <th class="p-4">মোট বিল</th>
-                                            <th class="p-4 text-center">অ্যাকশন</th>
+                                            <th class="p-4">Product name</th>
+                                            <th class="p-4">Quantity</th>
+                                            <th class="p-4">Price(Taka)</th>
+                                            <th class="p-4">Total Amount</th>
+                                            <th class="p-4 text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="cart-table-body" class="divide-y divide-slate-100">
                                         <tr>
-                                            <td colspan="5" class="p-8 text-center text-slate-400">কার্টটি এখনো সম্পূর্ণ খালি রয়েছে।</td>
+                                            <td colspan="5" class="p-8 text-center text-slate-400">Cart Empty</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -202,31 +202,33 @@
 
                     <div class="space-y-6">
                         <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                            <h3 class="font-bold text-slate-800 border-b pb-2 text-sm uppercase tracking-wider">পেমেন্ট ও অর্ডার কন্ট্রোল</h3>
+                            <h3 class="font-bold text-slate-800 border-b pb-2 text-sm uppercase tracking-wider">Payment & Order Control</h3>
                             <div class="space-y-3">
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-600 mb-1">পেমেন্ট মেথড</label>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Payment Method</label>
                                     <select id="bill-pay-method" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                        <option value="Cash">Cash (নগদ)</option>
-                                        <option value="Online">Online Pay (বিকাশ/কার্ড)</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Online">Card</option>
+                                        <option value="Online">Bkash</option> 
+                                        <option value="Online">Nagad</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-600 mb-1">প্রাপ্ত টাকা (Paid Amount)</label>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Paid Amount</label>
                                     <input type="number" id="bill-paid-input" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="কত টাকা পেলেন?">
                                 </div>
                             </div>
                             <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2">
                                 <div class="flex justify-between text-sm text-slate-600">
-                                    <span>সাবটোটাল:</span>
+                                    <span>Subtotal:</span>
                                     <span id="summary-subtotal" class="font-bold">0.00 ৳</span>
                                 </div>
                                 <div class="flex justify-between text-lg text-indigo-600 font-bold border-t pt-2">
-                                    <span>সর্বমোট বিল:</span>
+                                    <span>Total Bill:</span>
                                     <span id="summary-total">0.00 ৳</span>
                                 </div>
                             </div>
-                            <button onclick="processFinalInvoice()" class="w-full bg-emerald-600 text-white p-3.5 rounded-xl font-bold hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 text-center">ই-বিল তৈরি করুন (Create Bill)</button>
+                            <button onclick="processFinalInvoice()" class="w-full bg-emerald-600 text-white p-3.5 rounded-xl font-bold hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 text-center">Create Bill</button>
                         </div>
                     </div>
                 </div>
