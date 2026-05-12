@@ -184,7 +184,7 @@
                                         <tr>
                                             <th class="p-4">Product Name</th>
                                             <th class="p-4">Quantity</th>
-                                            <th class="p-4">Unit Price</th>
+                                            <th class="p-4">Unit Price (with Dis. & VAT)</th>
                                             <th class="p-4">Subtotal</th>
                                             <th class="p-4 text-center">Action</th>
                                         </tr>
@@ -207,8 +207,7 @@
                                     <label class="block text-xs font-semibold text-slate-600 mb-1">Payment Method</label>
                                     <select id="bill-pay-method" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                         <option value="Cash">Cash</option>
-                                        <option value="Card">Card</option>
-                                        <option value="Bkash">Bkash</option>
+                                        <option value="Online">Online Pay (Card/Mobile)</option>
                                     </select>
                                 </div>
                                 <div>
@@ -240,7 +239,7 @@
 
                 <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
                     <h3 class="font-bold text-slate-800 border-b pb-2 text-sm uppercase tracking-wider">New Product Ingest</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 mb-1">Product Name</label>
                             <input type="text" id="inv-name" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Product name">
@@ -266,6 +265,14 @@
                             <input type="number" id="inv-sell" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="0.00">
                         </div>
                         <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Discount ($ Amount)</label>
+                            <input type="number" id="inv-discount" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="0.00" value="0">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">VAT (%)</label>
+                            <input type="number" id="inv-vat" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="%" value="0">
+                        </div>
+                        <div>
                             <label class="block text-xs font-semibold text-slate-600 mb-1">Gift Item / Offer</label>
                             <input type="text" id="inv-gift" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Optional gift">
                         </div>
@@ -284,13 +291,15 @@
                                     <th class="p-4">Stock Level</th>
                                     <th class="p-4">Buying Price</th>
                                     <th class="p-4">Selling Price</th>
+                                    <th class="p-4">Discount</th>
+                                    <th class="p-4">VAT</th>
                                     <th class="p-4">Attached Gift</th>
                                     <th class="p-4 text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="inventory-table-body" class="divide-y divide-slate-100">
                                 <tr>
-                                    <td colspan="6" class="p-8 text-center text-slate-400">No products inside the inventory database.</td>
+                                    <td colspan="8" class="p-8 text-center text-slate-400">No products inside the inventory database.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -396,7 +405,6 @@
 
 
     <script>
-        // System Databases Initializations
         let activeUser = null;
         let dbUsers = JSON.parse(localStorage.getItem('pos_users')) || {};
         let captchaCode = '';
@@ -407,7 +415,6 @@
             checkAutoLogin();
         };
 
-        // --- AUTHENTICATION INTERFACES CORE ---
         function toggleAuth(showLogin) {
             document.getElementById('login-card').classList.toggle('hidden', !showLogin);
             document.getElementById('signup-card').classList.toggle('hidden', showLogin);
@@ -446,7 +453,6 @@
                 return;
             }
 
-            // Provisioning structural data schema for registered users
             dbUsers[username] = {
                 username: username,
                 password: password,
@@ -492,7 +498,6 @@
             document.getElementById('login-password').value = '';
         }
 
-        // --- DASHBOARD ROUTERS ---
         function loadApplication() {
             document.getElementById('auth-container').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
@@ -520,14 +525,14 @@
             document.getElementById('print-area').classList.add('hidden');
         }
 
-        // --- INVENTORY MANAGEMENT LAYER ---
+        // --- INVENTORY MANAGEMENT MODULE (Updated Feature 2) ---
         function renderInventory() {
             const items = dbUsers[activeUser].inventory || [];
             const tbody = document.getElementById('inventory-table-body');
             tbody.innerHTML = '';
 
             if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">No inventory products registered.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-400">No inventory products registered.</td></tr>`;
                 populatePOSProductDropdown();
                 return;
             }
@@ -539,6 +544,8 @@
                         <td class="p-4">${item.qty} <span class="text-xs text-slate-400 font-bold uppercase">${item.unit}</span></td>
                         <td class="p-4">${item.buy.toFixed(2)} $</td>
                         <td class="p-4 font-semibold text-indigo-600">${item.sell.toFixed(2)} $</td>
+                        <td class="p-4 text-rose-500">-${(item.discount || 0).toFixed(2)} $</td>
+                        <td class="p-4 text-amber-600">+${item.vat || 0}%</td>
                         <td class="p-4 text-emerald-600 font-medium">${item.gift || '-'}</td>
                         <td class="p-4 text-center">
                             <button onclick="handleEditProduct(${index})" class="text-indigo-600 hover:text-indigo-900 mr-3 font-semibold">Edit</button>
@@ -550,12 +557,15 @@
             populatePOSProductDropdown();
         }
 
+        // (Updated Feature 3)
         function handleSaveProduct() {
             const name = document.getElementById('inv-name').value.trim();
             const qty = parseFloat(document.getElementById('inv-qty').value);
             const unit = document.getElementById('inv-unit').value;
             const buy = parseFloat(document.getElementById('inv-buy').value);
             const sell = parseFloat(document.getElementById('inv-sell').value);
+            const discount = parseFloat(document.getElementById('inv-discount').value) || 0;
+            const vat = parseFloat(document.getElementById('inv-vat').value) || 0;
             const gift = document.getElementById('inv-gift').value.trim();
 
             if (!name || isNaN(qty) || isNaN(buy) || isNaN(sell)) {
@@ -563,15 +573,16 @@
                 return;
             }
 
-            dbUsers[activeUser].inventory.push({ name, qty, unit, buy, sell, gift });
+            dbUsers[activeUser].inventory.push({ name, qty, unit, buy, sell, discount, vat, gift });
             saveToLocalStorage();
             renderInventory();
 
-            // Clear Input Buffer
             document.getElementById('inv-name').value = '';
             document.getElementById('inv-qty').value = '';
             document.getElementById('inv-buy').value = '';
             document.getElementById('inv-sell').value = '';
+            document.getElementById('inv-discount').value = '0';
+            document.getElementById('inv-vat').value = '0';
             document.getElementById('inv-gift').value = '';
         }
 
@@ -607,6 +618,7 @@
             });
         }
 
+        // (Updated Feature 4 - Auto calculations for Discount and VAT at Checkout)
         function addToCart() {
             const select = document.getElementById('bill-product-select');
             const index = select.value;
@@ -623,7 +635,15 @@
                 return;
             }
 
-            // If product exists in active runtime cart, aggregate metrics
+            // Calculation LOP: Subtract standard discount amount first
+            let netUnitPrice = item.sell - (item.discount || 0);
+            
+            // Step 2: Apply VAT Percentage calculation factor
+            let vatFactor = 1 + ((item.vat || 0) / 100);
+            let finalUnitPrice = netUnitPrice * vatFactor;
+
+            if (finalUnitPrice < 0) finalUnitPrice = 0;
+
             const cartIndex = cart.findIndex(c => c.inventoryIndex == index);
             if (cartIndex > -1) {
                 if ((cart[cartIndex].qty + qty) > item.qty) {
@@ -638,8 +658,8 @@
                     name: item.name,
                     qty: qty,
                     unit: item.unit,
-                    price: item.sell,
-                    total: qty * item.sell
+                    price: finalUnitPrice,
+                    total: qty * finalUnitPrice
                 });
             }
 
@@ -688,7 +708,6 @@
             document.getElementById('summary-total').innerText = `${total.toFixed(2)} $`;
         }
 
-        // --- TRANSACTION VERIFICATION & QUANTUM STOCK SYNCHRONIZATION ---
         function processFinalInvoice() {
             if (cart.length === 0) {
                 alert('No commodities bound within current operational cart pipeline!');
@@ -700,12 +719,10 @@
             const totalBill = cart.reduce((sum, item) => sum + item.total, 0);
             const dueAmount = Math.max(0, totalBill - paidAmount);
 
-            // 1. Quantum stock deduction mapping 
             cart.forEach(item => {
                 dbUsers[activeUser].inventory[item.inventoryIndex].qty -= item.qty;
             });
 
-            // 2. Formatting immutable ledger entry
             const newStatement = {
                 date: new Date().toLocaleString(),
                 total: totalBill,
@@ -716,7 +733,6 @@
             dbUsers[activeUser].statements.push(newStatement);
             saveToLocalStorage();
 
-            // 3. Mapping data configurations onto dynamic DOM receipt print areas
             const shopProfile = dbUsers[activeUser];
             document.getElementById('bill-shop-name').innerText = shopProfile.company;
             document.getElementById('bill-shop-cat').innerText = shopProfile.category || "General Store";
@@ -749,14 +765,12 @@
             document.getElementById('bill-paid-price').innerText = paidAmount.toFixed(2);
             document.getElementById('bill-due-price').innerText = dueAmount.toFixed(2);
 
-            // Reset operational nodes
             cart = [];
             document.getElementById('bill-paid-input').value = '';
             renderCart();
             renderInventory();
             renderStatements();
 
-            // 4. Toggle visibility parameters to route UI rendering onto the print spooler context
             document.getElementById('app-container').classList.add('hidden');
             document.getElementById('print-area').classList.remove('hidden');
         }
@@ -766,7 +780,6 @@
             document.getElementById('app-container').classList.remove('hidden');
         }
 
-        // --- ACCOUNTING LEDGER INTERFACES ---
         function renderStatements() {
             const statements = dbUsers[activeUser].statements || [];
             const tbody = document.getElementById('statement-table-body');
@@ -807,7 +820,6 @@
             document.getElementById('widget-total-due').innerText = `${due.toFixed(2)} $`;
         }
 
-        // --- CSV GENERATOR FOR DATA CAPTURE EXPORTS ---
         function handleDownloadCSV() {
             const statements = dbUsers[activeUser].statements || [];
             if (statements.length === 0) {
