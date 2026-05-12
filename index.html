@@ -54,7 +54,7 @@
         
         <div id="login-card" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-100 transition-all">
             <div class="text-center mb-8">
-                <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase">POS PRO v3.0</span>
+                <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase">QuickBill</span>
                 <h2 class="text-3xl font-bold text-slate-900 mt-2">Sign In</h2>
                 <p class="text-sm text-slate-500 mt-1">Access your business dashboard</p>
             </div>
@@ -128,7 +128,7 @@
 
             <nav class="flex-grow p-4 space-y-1">
                 <button onclick="switchTab('tab-pos')" id="btn-tab-pos" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium bg-indigo-600 text-white transition">
-                    <span>🛒</span> <span>Point of Sale (POS)</span>
+                    <span>🛒</span> <span>Point of Sale</span>
                 </button>
                 <button onclick="switchTab('tab-inventory')" id="btn-tab-inventory" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition">
                     <span>📦</span> <span>Inventory Management</span>
@@ -149,7 +149,7 @@
             <div id="tab-pos" class="tab-content space-y-6">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h1 class="text-2xl font-bold text-slate-900">Point of Sale (POS)</h1>
+                        <h1 class="text-2xl font-bold text-slate-900">Point of Sale</h1>
                         <p class="text-sm text-slate-500">Generate e-bills instantly for customers</p>
                     </div>
                     <div class="bg-indigo-50 border border-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-2">
@@ -185,15 +185,15 @@
                             <div id="live-calculation-panel" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs transition-all">
                                 <div>
                                     <span class="text-slate-400 block">Unit Price:</span>
-                                    <span id="live-unit-price" class="font-bold text-slate-700">0.00 $</span>
+                                    <span id="live-unit-price" class="font-bold text-slate-700">0.00 TK</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block">Subtotal:</span>
-                                    <span id="live-subtotal" class="font-bold text-slate-700">0.00 $</span>
+                                    <span id="live-subtotal" class="font-bold text-slate-700">0.00 TK</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block">VAT / Discount:</span>
-                                    <span id="live-vat-dis" class="font-bold text-slate-700">0.00 $</span>
+                                    <span id="live-vat-dis" class="font-bold text-slate-700">0.00 TK</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block">Gift / Offer:</span>
@@ -237,18 +237,19 @@
                                     <label class="block text-xs font-semibold text-slate-600 mb-1">Payment Method</label>
                                     <select id="bill-pay-method" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                         <option value="Cash">Cash</option>
-                                        <option value="Online">Online Pay (Card/Mobile)</option>
+                                        <option value="Online">Online Pay(Bkash)</option>
+                                        <option value="Card">Card</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-600 mb-1">Amount Receive Selection</label>
                                     <select id="bill-receive-status" onchange="togglePaidInputDisplay()" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                        <option value="Paid">Paid (Full/Partial)</option>
-                                        <option value="Unpaid">Unpaid (Full Due)</option>
+                                        <option value="Paid">Paid</option>
+                                        <option value="Unpaid">Unpaid</option>
                                     </select>
                                 </div>
                                 <div id="paid-amount-input-container">
-                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Amount Received ($)</label>
+                                    
                                     <input type="number" id="bill-paid-input" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="0.00">
                                 </div>
                             </div>
@@ -260,15 +261,15 @@
                                 </div>
                                 <div class="flex justify-between text-slate-600">
                                     <span>Total Discount:</span>
-                                    <span id="summary-discount" class="font-bold text-rose-500">0.00 $</span>
+                                    <span id="summary-discount" class="font-bold text-rose-500">0.00 TK</span>
                                 </div>
                                 <div class="flex justify-between text-slate-600">
                                     <span>Total VAT:</span>
-                                    <span id="summary-vat" class="font-bold text-amber-600">0.00 $</span>
+                                    <span id="summary-vat" class="font-bold text-amber-600">0.00 TK</span>
                                 </div>
                                 <div class="flex justify-between text-lg text-indigo-600 font-bold border-t pt-2">
                                     <span>Grand Total:</span>
-                                    <span id="summary-total">0.00 $</span>
+                                    <span id="summary-total">0.00 TK</span>
                                 </div>
                             </div>
                             <button onclick="processFinalInvoice()" class="w-full bg-emerald-600 text-white p-3.5 rounded-xl font-bold hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 text-center">Create Bill</button>
@@ -291,7 +292,7 @@
                             <input type="text" id="inv-name" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Product name">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Measurement Unit</label>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Unit</label>
                             <select id="inv-unit" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="PCs">Pieces (PCs)</option>
                                 <option value="kg">Kilogram (kg)</option>
@@ -311,7 +312,7 @@
                             <input type="number" id="inv-sell" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Per unit">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Discount ($ Amount)</label>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Discount</label>
                             <input type="number" id="inv-discount" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="0.00" value="0">
                         </div>
                         <div>
