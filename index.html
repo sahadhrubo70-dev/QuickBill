@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business POS & Inventory Pro Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         body {
@@ -126,11 +126,6 @@
                 </div>
             </div>
 
-            <div class="p-4 border-b border-slate-800 space-y-2">
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Upload Shop Logo (JPG/PNG)</label>
-                <input type="file" id="shop-logo-upload" accept="image/png, image/jpeg" onchange="handleLogoUpload(this)" class="w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer">
-            </div>
-
             <nav class="flex-grow p-4 space-y-1">
                 <button onclick="switchTab('tab-pos')" id="btn-tab-pos" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium bg-indigo-600 text-white transition">
                     <span>🛒</span> <span>Point of Sale (POS)</span>
@@ -162,25 +157,47 @@
                           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
                           <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
                         </span>
-                        <span>Handheld Scanner Connected & Ready</span>
+                        <span>Handheld Scanner Active</span>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 space-y-6">
                         <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                            <h3 class="font-bold text-slate-800 border-b pb-2 text-sm uppercase tracking-wider">Add Products to Cart</h3>
+                            <h3 class="font-bold text-slate-800 border-b pb-2 text-sm uppercase tracking-wider">Select Product & Quantity</h3>
                             <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
-                                <div class="sm:col-span-6">
+                                <div class="sm:col-span-5">
                                     <label class="block text-xs font-semibold text-slate-600 mb-1">Select Product</label>
-                                    <select id="bill-product-select" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
+                                    <select id="bill-product-select" onchange="updatePOSUnitDisplay()" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
                                 </div>
-                                <div class="sm:col-span-3">
-                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Quantity / Weight</label>
-                                    <input type="number" id="bill-qty-input" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g., 5">
+                                <div class="sm:col-span-4">
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Quantity</label>
+                                    <div class="relative flex items-center">
+                                        <input type="number" id="bill-qty-input" oninput="calculateLivePOSBreakdown()" class="w-full border border-slate-200 p-2.5 pr-16 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="0.00">
+                                        <span id="pos-unit-badge" class="absolute right-3 text-xs font-bold text-slate-400 uppercase">Unit</span>
+                                    </div>
                                 </div>
                                 <div class="sm:col-span-3 flex items-end">
                                     <button onclick="addToCart()" class="w-full bg-indigo-600 text-white p-2.5 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition">Add to Cart</button>
+                                </div>
+                            </div>
+
+                            <div id="live-calculation-panel" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs transition-all">
+                                <div>
+                                    <span class="text-slate-400 block">Unit Price:</span>
+                                    <span id="live-unit-price" class="font-bold text-slate-700">0.00 $</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block">Subtotal:</span>
+                                    <span id="live-subtotal" class="font-bold text-slate-700">0.00 $</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block">VAT / Discount:</span>
+                                    <span id="live-vat-dis" class="font-bold text-slate-700">0.00 $</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block">Gift / Offer:</span>
+                                    <span id="live-gift" class="font-bold text-emerald-600 font-medium">-</span>
                                 </div>
                             </div>
                         </div>
@@ -195,15 +212,16 @@
                                     <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
                                         <tr>
                                             <th class="p-4">Product Name</th>
-                                            <th class="p-4">Quantity</th>
-                                            <th class="p-4">Unit Price (with Dis. & VAT)</th>
+                                            <th class="p-4">Quantity & Unit</th>
+                                            <th class="p-4">Unit Price</th>
+                                            <th class="p-4">Dis / VAT</th>
                                             <th class="p-4">Subtotal</th>
                                             <th class="p-4 text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="cart-table-body" class="divide-y divide-slate-100">
                                         <tr>
-                                            <td colspan="5" class="p-8 text-center text-slate-400">Your cart is currently empty. Scan a barcode or select an item manually.</td>
+                                            <td colspan="6" class="p-8 text-center text-slate-400">Your cart is empty. Scan a barcode or select an item manually.</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -213,7 +231,7 @@
 
                     <div class="space-y-6">
                         <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                            <h3 class="font-bold text-slate-800 border-b pb-2 text-sm uppercase tracking-wider">Checkout Summary</h3>
+                            <h3 class="font-bold text-slate-800 border-b pb-2 text-sm uppercase tracking-wider">Payment Details</h3>
                             <div class="space-y-3">
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-600 mb-1">Payment Method</label>
@@ -223,14 +241,30 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Amount Received (Paid)</label>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Amount Receive Selection</label>
+                                    <select id="bill-receive-status" onchange="togglePaidInputDisplay()" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        <option value="Paid">Paid (Full/Partial)</option>
+                                        <option value="Unpaid">Unpaid (Full Due)</option>
+                                    </select>
+                                </div>
+                                <div id="paid-amount-input-container">
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Amount Received ($)</label>
                                     <input type="number" id="bill-paid-input" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="0.00">
                                 </div>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2">
-                                <div class="flex justify-between text-sm text-slate-600">
-                                    <span>Subtotal:</span>
-                                    <span id="summary-subtotal" class="font-bold">0.00 $</span>
+
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2 text-sm">
+                                <div class="flex justify-between text-slate-600">
+                                    <span>Total Items:</span>
+                                    <span id="summary-items-qty" class="font-bold">0</span>
+                                </div>
+                                <div class="flex justify-between text-slate-600">
+                                    <span>Total Discount:</span>
+                                    <span id="summary-discount" class="font-bold text-rose-500">0.00 $</span>
+                                </div>
+                                <div class="flex justify-between text-slate-600">
+                                    <span>Total VAT:</span>
+                                    <span id="summary-vat" class="font-bold text-amber-600">0.00 $</span>
                                 </div>
                                 <div class="flex justify-between text-lg text-indigo-600 font-bold border-t pt-2">
                                     <span>Grand Total:</span>
@@ -259,9 +293,9 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 mb-1">Measurement Unit</label>
                             <select id="inv-unit" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="pcs">Pieces (Pcs)</option>
-                                <option value="kg">Kilogram (Kg)</option>
-                                <option value="gram">Gram (g)</option>
+                                <option value="PCs">Pieces (PCs)</option>
+                                <option value="kg">Kilogram (kg)</option>
+                                <option value="gm">Gram (gm)</option>
                             </select>
                         </div>
                         <div>
@@ -383,11 +417,10 @@
 
     <div id="print-area" class="hidden">
         <div class="text-center mb-6">
-            <img id="bill-logo-img" src="" class="h-16 mx-auto mb-2 object-contain hidden">
             <h1 id="bill-shop-name" class="text-xl font-bold uppercase tracking-wide text-slate-900">SHOP NAME</h1>
             <p id="bill-shop-cat" class="text-xs text-slate-500">CATEGORY</p>
             <div class="border-t border-b border-black py-1 my-3 font-bold text-lg tracking-widest text-center">
-                ** ISSUE **
+                ** INVOICE **
             </div>
         </div>
         <div class="text-xs space-y-1 mb-4 text-slate-800">
@@ -405,8 +438,8 @@
             <tbody id="bill-items-body" class="text-slate-800"></tbody>
         </table>
         <div class="text-xs text-right space-y-1 mb-6 text-slate-900">
-            <p>Total Bill: <span id="bill-total-price" class="font-semibold">0.00</span> $</p>
-            <p>Payment Mode: <span id="bill-payment-type" class="font-semibold">Cash</span></p>
+            <div id="bill-total-price"></div>
+            <p class="mt-2">Payment Mode: <span id="bill-payment-type" class="font-semibold">Cash</span></p>
             <p>Amount Paid: <span id="bill-paid-price" class="font-semibold">0.00</span> $</p>
             <p class="border-t border-dotted border-black/40 pt-1">Balance Due: <span id="bill-due-price" class="font-bold text-red-600">0.00</span> $</p>
         </div>
@@ -469,7 +502,6 @@
                 username: username,
                 password: password,
                 company: company,
-                logo: '', 
                 category: category,
                 inventory: [],
                 statements: []
@@ -519,12 +551,6 @@
             document.getElementById('app-username').innerText = `User: ${userData.username}`;
             document.getElementById('app-logo-initial').innerText = userData.company.substring(0, 1).toUpperCase();
 
-            // Sync structural logo file if available inside local database
-            if(userData.logo) {
-                const img = document.getElementById('bill-logo-img');
-                if(img) { img.src = userData.logo; img.classList.remove('hidden'); }
-            }
-
             switchTab('tab-pos');
             renderInventory();
             renderStatements();
@@ -543,19 +569,56 @@
             document.getElementById('print-area').classList.add('hidden');
         }
 
-        // --- SHOP/OUTLET IMAGE UPLOAD LOGIC ---
-        function handleLogoUpload(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    dbUsers[activeUser].logo = e.target.result;
-                    saveToLocalStorage();
-                    alert('Shop/Outlet image synchronized successfully!');
-                    
-                    const img = document.getElementById('bill-logo-img');
-                    if(img) { img.src = e.target.result; img.classList.remove('hidden'); }
-                };
-                reader.readAsDataURL(input.files[0]);
+        // --- POS LIVE CALCULATION & INTERACTION ENGINES ---
+        function updatePOSUnitDisplay() {
+            const select = document.getElementById('bill-product-select');
+            const badge = document.getElementById('pos-unit-badge');
+            const panel = document.getElementById('live-calculation-panel');
+            
+            if (select.value === "") {
+                badge.innerText = "Unit";
+                panel.classList.add('hidden');
+                return;
+            }
+            
+            const item = dbUsers[activeUser].inventory[select.value];
+            badge.innerText = item.unit;
+            calculateLivePOSBreakdown();
+        }
+
+        function calculateLivePOSBreakdown() {
+            const select = document.getElementById('bill-product-select');
+            const qtyInput = document.getElementById('bill-qty-input');
+            const panel = document.getElementById('live-calculation-panel');
+            
+            const index = select.value;
+            const qty = parseFloat(qtyInput.value) || 0;
+            
+            if (index === "" || qty <= 0) {
+                panel.classList.add('hidden');
+                return;
+            }
+            
+            const item = dbUsers[activeUser].inventory[index];
+            panel.classList.remove('hidden');
+            
+            document.getElementById('live-unit-price').innerText = `${item.sell.toFixed(2)} $ / ${item.unit}`;
+            document.getElementById('live-subtotal').innerText = `${(item.sell * qty).toFixed(2)} $`;
+            document.getElementById('live-vat-dis').innerText = `Dis: -${(item.discount * qty).toFixed(2)} $ | VAT: +${item.vat}%`;
+            document.getElementById('live-gift').innerText = item.gift ? item.gift : 'None';
+        }
+
+        function togglePaidInputDisplay() {
+            const status = document.getElementById('bill-receive-status').value;
+            const container = document.getElementById('paid-amount-input-container');
+            const input = document.getElementById('bill-paid-input');
+            
+            if (status === 'Unpaid') {
+                container.classList.add('hidden');
+                input.value = '0';
+            } else {
+                container.classList.remove('hidden');
+                input.value = '';
             }
         }
 
@@ -594,7 +657,6 @@
                     </tr>
                 `;
                 
-                // Asynchronous rendering pipeline context for standard Code128 encoding
                 setTimeout(() => {
                     try {
                         JsBarcode(`#barcode-${item.barcode}`, item.barcode, {
@@ -620,11 +682,10 @@
             const gift = document.getElementById('inv-gift').value.trim();
 
             if (!name || isNaN(qty) || isNaN(buy) || isNaN(sell)) {
-                alert('Please fill all required pricing, metric weights, and quantity fields!');
+                alert('Please fill all required fields!');
                 return;
             }
 
-            // Generate an immutable unique alphanumeric 8-digit barcode identifier
             const uniqueBarcode = "SKU" + Math.floor(10000 + Math.random() * 90000);
 
             dbUsers[activeUser].inventory.push({ 
@@ -658,14 +719,13 @@
         }
 
         function handleDeleteProduct(index) {
-            if (confirm('Are you absolutely certain you wish to purge this product from inventory systems?')) {
+            if (confirm('Are you certain you wish to remove this product?')) {
                 dbUsers[activeUser].inventory.splice(index, 1);
                 saveToLocalStorage();
                 renderInventory();
             }
         }
 
-        // --- POINT OF SALE (POS) MANUAL INPUT DROPDOWNS ---
         function populatePOSProductDropdown() {
             const select = document.getElementById('bill-product-select');
             select.innerHTML = '<option value="">Select Product Manually</option>';
@@ -682,20 +742,21 @@
             const qty = parseFloat(document.getElementById('bill-qty-input').value);
 
             if (index === "" || isNaN(qty) || qty <= 0) {
-                alert('Select an existing item listing and allocate valid values!');
+                alert('Select an item and allocate a valid quantity!');
                 return;
             }
 
             executeAddToCartProcessing(index, qty);
             document.getElementById('bill-qty-input').value = '';
+            document.getElementById('bill-product-select').value = '';
+            document.getElementById('pos-unit-badge').innerText = 'Unit';
         }
 
-        // Shared execution routing module for both manual entries and scanned items
         function executeAddToCartProcessing(inventoryIndex, quantitativeVolume) {
             const item = dbUsers[activeUser].inventory[inventoryIndex];
             
             if (quantitativeVolume > item.qty) {
-                alert(`Insufficient stock volume! Maximum allowable threshold: ${item.qty} ${item.unit}`);
+                alert(`Insufficient stock level! Maximum allowable: ${item.qty} ${item.unit}`);
                 return;
             }
 
@@ -719,9 +780,14 @@
                     qty: quantitativeVolume,
                     unit: item.unit,
                     price: finalUnitPrice,
+                    rawSell: item.sell,
+                    rawDiscount: item.discount,
+                    rawVat: item.vat,
+                    gift: item.gift,
                     total: quantitativeVolume * finalUnitPrice
                 });
             }
+            document.getElementById('live-calculation-panel').classList.add('hidden');
             renderCart();
         }
 
@@ -730,13 +796,11 @@
         let lastKeyTime = Date.now();
 
         window.addEventListener('keydown', function(e) {
-            // Bypass processing pipeline if administrative input nodes are focused
             if (document.activeElement.tagName === 'INPUT' && document.activeElement.id !== 'captcha-input') {
                 return;
             }
 
             const currentTime = Date.now();
-            // Hardware scanners output text extremely fast (typically < 30ms latency spacing)
             if (currentTime - lastKeyTime > 50) {
                 barcodeBuffer = '';
             }
@@ -762,10 +826,8 @@
                 return;
             }
 
-            // Defaults cleanly to matching 1 asset incremental step based on scan rate frequency
             executeAddToCartProcessing(index, 1);
 
-            // Audio validation pulse verification tone feedback
             if(window.AudioContext || window.webkitAudioContext) {
                 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 let oscillator = audioCtx.createOscillator();
@@ -779,20 +841,35 @@
             tbody.innerHTML = '';
 
             if (cart.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">Your cart is currently empty. Scan a barcode or select an item manually.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400">Your cart is empty. Scan a barcode or select an item manually.</td></tr>`;
                 document.getElementById('cart-item-count').innerText = `0 Items`;
-                updateSummary(0);
+                document.getElementById('summary-items-qty').innerText = '0';
+                document.getElementById('summary-discount').innerText = '0.00 $';
+                document.getElementById('summary-vat').innerText = '0.00 $';
+                document.getElementById('summary-total').innerText = '0.00 $';
                 return;
             }
 
             let grandTotal = 0;
+            let totalDiscount = 0;
+            let totalVat = 0;
+            let totalQty = 0;
+
             cart.forEach((item, index) => {
                 grandTotal += item.total;
+                totalDiscount += item.rawDiscount * item.qty;
+                totalVat += (item.rawSell - item.rawDiscount) * (item.rawVat / 100) * item.qty;
+                totalQty += item.qty;
+
                 tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-4 font-medium text-slate-800">${item.name}</td>
-                        <td class="p-4">${item.qty} ${item.unit}</td>
-                        <td class="p-4">${item.price.toFixed(2)} $</td>
+                    <tr class="hover:bg-slate-50 text-xs sm:text-sm">
+                        <td class="p-4 font-medium text-slate-800">
+                            <div>${item.name}</div>
+                            <div class="text-[10px] text-emerald-600 font-medium">${item.gift ? '🎁 Gift: '+item.gift : ''}</div>
+                        </td>
+                        <td class="p-4">${item.qty} <span class="text-xs text-slate-400 font-bold uppercase">${item.unit}</span></td>
+                        <td class="p-4">${item.rawSell.toFixed(2)} $</td>
+                        <td class="p-4 text-slate-500">Dis: -${item.rawDiscount.toFixed(2)}$ <br> VAT: +${item.rawVat}%</td>
                         <td class="p-4 font-semibold text-indigo-600">${item.total.toFixed(2)} $</td>
                         <td class="p-4 text-center">
                             <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 font-semibold">Remove</button>
@@ -802,7 +879,10 @@
             });
 
             document.getElementById('cart-item-count').innerText = `${cart.length} Items`;
-            updateSummary(grandTotal);
+            document.getElementById('summary-items-qty').innerText = totalQty.toFixed(2);
+            document.getElementById('summary-discount').innerText = `${totalDiscount.toFixed(2)} $`;
+            document.getElementById('summary-vat').innerText = `${totalVat.toFixed(2)} $`;
+            document.getElementById('summary-total').innerText = `${grandTotal.toFixed(2)} $`;
         }
 
         function removeFromCart(index) {
@@ -810,20 +890,21 @@
             renderCart();
         }
 
-        function updateSummary(total) {
-            document.getElementById('summary-subtotal').innerText = `${total.toFixed(2)} $`;
-            document.getElementById('summary-total').innerText = `${total.toFixed(2)} $`;
-        }
-
         function processFinalInvoice() {
             if (cart.length === 0) {
-                alert('No commodities bound within current operational cart pipeline!');
+                alert('Your shopping cart is currently empty!');
                 return;
             }
 
-            const paidAmount = parseFloat(document.getElementById('bill-paid-input').value) || 0;
+            const receiveStatus = document.getElementById('bill-receive-status').value;
+            let paidAmount = parseFloat(document.getElementById('bill-paid-input').value) || 0;
             const payMethod = document.getElementById('bill-pay-method').value;
             const totalBill = cart.reduce((sum, item) => sum + item.total, 0);
+
+            if (receiveStatus === 'Unpaid') {
+                paidAmount = 0;
+            }
+
             const dueAmount = Math.max(0, totalBill - paidAmount);
 
             cart.forEach(item => {
@@ -835,45 +916,58 @@
                 total: totalBill,
                 paid: paidAmount,
                 due: dueAmount,
-                method: payMethod
+                method: receiveStatus === 'Unpaid' ? 'Unpaid Ledger' : payMethod
             };
             dbUsers[activeUser].statements.push(newStatement);
             saveToLocalStorage();
 
             const shopProfile = dbUsers[activeUser];
             document.getElementById('bill-shop-name').innerText = shopProfile.company;
-            document.getElementById('bill-shop-cat').innerText = shopProfile.category || "General Store";
-
-            const img = document.getElementById('bill-logo-img');
-            if (shopProfile.logo) {
-                img.src = shopProfile.logo;
-                img.classList.remove('hidden');
-            } else {
-                img.classList.add('hidden');
-            }
-
+            document.getElementById('bill-shop-cat').innerText = shopProfile.category || "Retail Counter";
             document.getElementById('bill-date').innerText = newStatement.date;
 
             const tbody = document.getElementById('bill-items-body');
             tbody.innerHTML = '';
+            
+            let totalDiscountCalculated = 0;
+            let totalVatCalculated = 0;
+
             cart.forEach(item => {
+                totalDiscountCalculated += (item.rawDiscount * item.qty);
+                totalVatCalculated += ((item.rawSell - item.rawDiscount) * (item.rawVat / 100) * item.qty);
+
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-100">
-                        <td class="py-1 text-left">${item.name}</td>
-                        <td class="py-1 text-right">${item.qty} ${item.unit}</td>
-                        <td class="py-1 text-right">${item.price.toFixed(2)}</td>
-                        <td class="py-1 text-right">${item.total.toFixed(2)}</td>
+                        <td class="py-1.5 text-left">
+                            <div>${item.name}</div>
+                            ${item.gift ? `<div class="text-[9px] text-slate-500">*Free Gift: ${item.gift}</div>` : ''}
+                        </td>
+                        <td class="py-1.5 text-right">${item.qty} ${item.unit}</td>
+                        <td class="py-1.5 text-right">${item.rawSell.toFixed(2)}</td>
+                        <td class="py-1.5 text-right">${item.total.toFixed(2)}</td>
                     </tr>
                 `;
             });
 
-            document.getElementById('bill-total-price').innerText = totalBill.toFixed(2);
-            document.getElementById('bill-payment-type').innerText = payMethod;
+            document.getElementById('bill-total-price').innerHTML = `
+                <div class="space-y-0.5 text-slate-700">
+                    <div>Total Discount: -${totalDiscountCalculated.toFixed(2)} $</div>
+                    <div>Total VAT: +${totalVatCalculated.toFixed(2)} $</div>
+                    <div class="text-sm font-bold text-black border-t border-dotted pt-1 mt-1">Grand Total: ${totalBill.toFixed(2)} $</div>
+                </div>
+            `;
+            
+            document.getElementById('bill-payment-type').innerText = receiveStatus === 'Unpaid' ? 'Unpaid Ledger' : payMethod;
             document.getElementById('bill-paid-price').innerText = paidAmount.toFixed(2);
             document.getElementById('bill-due-price').innerText = dueAmount.toFixed(2);
 
             cart = [];
             document.getElementById('bill-paid-input').value = '';
+            document.getElementById('bill-qty-input').value = '';
+            document.getElementById('bill-product-select').value = '';
+            document.getElementById('bill-receive-status').value = 'Paid';
+            togglePaidInputDisplay();
+            
             renderCart();
             renderInventory();
             renderStatements();
@@ -913,7 +1007,7 @@
                         <td class="p-4 font-bold text-slate-900">${st.total.toFixed(2)} $</td>
                         <td class="p-4 text-emerald-600 font-semibold">${st.paid.toFixed(2)} $</td>
                         <td class="p-4 text-rose-500 font-semibold">${st.due.toFixed(2)} $</td>
-                        <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${st.method === 'Cash' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${st.method}</span></td>
+                        <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${st.method.includes('Unpaid') ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}">${st.method}</span></td>
                     </tr>
                 `;
             });
@@ -930,7 +1024,7 @@
         function handleDownloadCSV() {
             const statements = dbUsers[activeUser].statements || [];
             if (statements.length === 0) {
-                alert('No processable parameters found to construct CSV schema metrics.');
+                alert('No data found to generate CSV.');
                 return;
             }
 
