@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business POS & Inventory Pro Suite</title>
+    <title>BuildFace Innovation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
@@ -26,7 +26,7 @@
     <div id="auth-container" class="flex-grow flex items-center justify-center p-4">
         <div id="login-card" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-100 transition-all">
             <div class="text-center mb-8">
-                <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase">POS PRO v3.5</span>
+                <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase">QuickBill</span>
                 <h2 class="text-3xl font-bold text-slate-900 mt-2">Sign In</h2>
                 <p class="text-sm text-slate-500 mt-1">Access your business dashboard</p>
             </div>
@@ -54,7 +54,7 @@
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Company / Business Name</label>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Shop / Outlet Name</label>
                     <input type="text" id="reg-company" class="w-full border border-slate-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition text-sm" placeholder="e.g., Global Traders">
                 </div>
                 <div>
@@ -99,7 +99,7 @@
 
             <nav class="flex-grow p-4 space-y-1">
                 <button onclick="switchTab('tab-pos')" id="btn-tab-pos" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium bg-indigo-600 text-white transition">
-                    <span>🛒</span> <span>Point of Sale (POS)</span>
+                    <span>🛒</span> <span>Point of Sale </span>
                 </button>
                 <button onclick="switchTab('tab-inventory')" id="btn-tab-inventory" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition">
                     <span>📦</span> <span>Inventory Management</span>
@@ -123,8 +123,8 @@
             <div id="tab-pos" class="tab-content space-y-6">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h1 class="text-2xl font-bold text-slate-900">Point of Sale (POS)</h1>
-                        <p class="text-sm text-slate-500">Generate e-bills instantly for customers</p>
+                        <h1 class="text-2xl font-bold text-slate-900">Point of Sale </h1>
+                        <p class="text-sm text-slate-500"></p>
                     </div>
                 </div>
 
@@ -150,10 +150,10 @@
                             </div>
 
                             <div id="live-calculation-panel" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                                <div><span class="text-slate-400 block">Unit Price:</span><span id="live-unit-price" class="font-bold text-slate-700">0.00 $</span></div>
-                                <div><span class="text-slate-400 block">Subtotal:</span><span id="live-subtotal" class="font-bold text-slate-700">0.00 $</span></div>
-                                <div><span class="text-slate-400 block">VAT / Discount:</span><span id="live-vat-dis" class="font-bold text-slate-700">0.00 $</span></div>
-                                <div><span class="text-slate-400 block">Gift / Offer:</span><span id="live-gift" class="font-bold text-emerald-600 font-medium">-</span></div>
+                                <div><span class="text-slate-400 block">Unit Price:</span><span id="live-unit-price" class="font-bold text-slate-700">0.00 TK</span></div>
+                                <div><span class="text-slate-400 block">Subtotal:</span><span id="live-subtotal" class="font-bold text-slate-700">0.00 TK</span></div>
+                                <div><span class="text-slate-400 block">VAT / Discount:</span><span id="live-vat-dis" class="font-bold text-slate-700">0.00 TK</span></div>
+                                <div><span class="text-slate-400 block">Gift :</span><span id="live-gift" class="font-bold text-emerald-600 font-medium">-</span></div>
                             </div>
                         </div>
 
@@ -190,27 +190,28 @@
                                     <label class="block text-xs font-semibold text-slate-600 mb-1">Payment Method</label>
                                     <select id="bill-pay-method" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                         <option value="Cash">Cash</option>
-                                        <option value="Online Pay">Online Pay (Card/Mobile)</option>
+                                        <option value="Card">Card</option>
+                                        <option value="Online Pay">Online Pay (Bkash)</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-600 mb-1">Amount Receive Selection</label>
                                     <select id="bill-receive-status" onchange="togglePaidInputDisplay()" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                        <option value="Paid">Paid (Full/Partial)</option>
-                                        <option value="Unpaid">Unpaid (Full Due)</option>
+                                        <option value="Paid">Paid</option>
+                                        <option value="Unpaid">Unpaid</option>
                                     </select>
                                 </div>
                                 <div id="paid-amount-input-container">
-                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Amount Received ($)</label>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-1">Amount Received (TK)</label>
                                     <input type="number" id="bill-paid-input" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="0.00">
                                 </div>
                             </div>
 
                             <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2 text-sm">
                                 <div class="flex justify-between text-slate-600"><span>Total Items:</span><span id="summary-items-qty" class="font-bold">0</span></div>
-                                <div class="flex justify-between text-slate-600"><span>Total Discount:</span><span id="summary-discount" class="font-bold text-rose-500">0.00 $</span></div>
-                                <div class="flex justify-between text-slate-600"><span>Total VAT:</span><span id="summary-vat" class="font-bold text-amber-600">0.00 $</span></div>
-                                <div class="flex justify-between text-lg text-indigo-600 font-bold border-t pt-2"><span>Grand Total:</span><span id="summary-total">0.00 $</span></div>
+                                <div class="flex justify-between text-slate-600"><span>Total Discount:</span><span id="summary-discount" class="font-bold text-rose-500">0.00 TK</span></div>
+                                <div class="flex justify-between text-slate-600"><span>Total VAT:</span><span id="summary-vat" class="font-bold text-amber-600">0.00 TK</span></div>
+                                <div class="flex justify-between text-lg text-indigo-600 font-bold border-t pt-2"><span>Grand Total:</span><span id="summary-total">0.00 TK</span></div>
                             </div>
                             <button onclick="processFinalInvoice()" class="w-full bg-emerald-600 text-white p-3.5 rounded-xl font-bold hover:bg-emerald-700 transition shadow-lg text-center">Create Bill</button>
                         </div>
@@ -256,7 +257,7 @@
                             <input type="number" id="inv-sell" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm" placeholder="Per unit">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Discount ($ Amount)</label>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Discount (TK Amount)</label>
                             <input type="number" id="inv-discount" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm" value="0">
                         </div>
                         <div>
@@ -310,15 +311,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
                         <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-2xl">💰</div>
-                        <div><span class="text-xs text-slate-400 uppercase font-semibold">Total Revenue</span><h3 class="text-2xl font-bold text-slate-900" id="widget-total-sales">0.00 $</h3></div>
+                        <div><span class="text-xs text-slate-400 uppercase font-semibold">Total Revenue</span><h3 class="text-2xl font-bold text-slate-900" id="widget-total-sales">0.00 TK</h3></div>
                     </div>
                     <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
                         <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-2xl">💵</div>
-                        <div><span class="text-xs text-slate-400 uppercase font-semibold">Cash Liquidated</span><h3 class="text-2xl font-bold text-emerald-600" id="widget-total-received">0.00 $</h3></div>
+                        <div><span class="text-xs text-slate-400 uppercase font-semibold">Cash Liquidated</span><h3 class="text-2xl font-bold text-emerald-600" id="widget-total-received">0.00 TK</h3></div>
                     </div>
                     <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
                         <div class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-2xl">🚨</div>
-                        <div><span class="text-xs text-slate-400 uppercase font-semibold">Receivable Due</span><h3 class="text-2xl font-bold text-rose-600" id="widget-total-due">0.00 $</h3></div>
+                        <div><span class="text-xs text-slate-400 uppercase font-semibold">Receivable Due</span><h3 class="text-2xl font-bold text-rose-600" id="widget-total-due">0.00 TK</h3></div>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
@@ -360,7 +361,7 @@
                             <input type="text" id="prof-address" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm" placeholder="e.g., House 12, Road 4, Dhaka">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Helpline Number / Contact</label>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Helpline Number</label>
                             <input type="text" id="prof-helpline" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm" placeholder="e.g., +8801XXXXXXXXX">
                         </div>
                     </div>
@@ -399,7 +400,7 @@
             <p class="border-t border-dotted border-black/40 pt-1">Balance Due: <span id="bill-due-price" class="font-bold text-red-600">0.00</span> $</p>
         </div>
         <div class="text-center text-[11px] border-t border-slate-300 pt-2 text-slate-600 space-y-0.5">
-            <p class="font-semibold">Thank you for your business!</p>
+            <p class="font-semibold">Thank you visit again!</p>
             <p id="bill-shop-helpline"></p>
         </div>
         <div class="text-center text-xs mt-6 no-print flex justify-center space-x-2">
@@ -477,7 +478,7 @@
             document.getElementById('app-container').classList.remove('hidden');
             const userData = dbUsers[activeUser];
             document.getElementById('app-company-name').innerText = userData.company;
-            document.getElementById('app-username').innerText = `User: ${userData.username}`;
+            document.getElementById('app-username').innerText = `User: TK{userData.username}`;
             
             // Profile Syncing
             if(userData.dp) {
@@ -544,9 +545,9 @@
             if (select.value === "" || qty <= 0) { panel.classList.add('hidden'); return; }
             const item = dbUsers[activeUser].inventory[select.value];
             panel.classList.remove('hidden');
-            document.getElementById('live-unit-price').innerText = `${item.sell.toFixed(2)} $`;
-            document.getElementById('live-subtotal').innerText = `${(item.sell * qty).toFixed(2)} $`;
-            document.getElementById('live-vat-dis').innerText = `Dis: -${(item.discount * qty).toFixed(2)} $ | VAT: +${item.vat}%`;
+            document.getElementById('live-unit-price').innerText = `TK{item.sell.toFixed(2)} $`;
+            document.getElementById('live-subtotal').innerText = `TK{(item.sell * qty).toFixed(2)} $`;
+            document.getElementById('live-vat-dis').innerText = `Discount: -TK{(item.discount * qty).toFixed(2)} TK | VAT: +TK{item.vat}%`;
             document.getElementById('live-gift').innerText = item.gift || 'None';
         }
 
@@ -606,19 +607,19 @@
 
                 tbody.innerHTML += `
                     <tr class="text-sm">
-                        <td class="p-4"><strong>${item.name}</strong><br><span class="text-xs text-emerald-600">${item.gift ? '🎁 '+item.gift : ''}</span></td>
-                        <td class="p-4">${item.qty} ${item.unit}</td>
-                        <td class="p-4">${item.rawSell.toFixed(2)} $</td>
-                        <td class="p-4">-${item.rawDiscount.toFixed(2)}$ / +${item.rawVat}%</td>
-                        <td class="p-4 font-bold text-indigo-600">${item.total.toFixed(2)} $</td>
-                        <td class="p-4 text-center"><button onclick="cart.splice(${index},1); renderCart();" class="text-red-500 font-semibold">Remove</button></td>
+                        <td class="p-4"><strong>${item.name}</strong><br><span class="text-xs text-emerald-600">TK{item.gift ? '🎁 '+item.gift : ''}</span></td>
+                        <td class="p-4">TK{item.qty} TK{item.unit}</td>
+                        <td class="p-4">TK{item.rawSell.toFixed(2)} $</td>
+                        <td class="p-4">-TK{item.rawDiscount.toFixed(2)}$ / +TK{item.rawVat}%</td>
+                        <td class="p-4 font-bold text-indigo-600">TK{item.total.toFixed(2)} TK</td>
+                        <td class="p-4 text-center"><button onclick="cart.splice(TK{index},1); renderCart();" class="text-red-500 font-semibold">Remove</button></td>
                     </tr>`;
             });
 
             document.getElementById('summary-items-qty').innerText = totalQty;
-            document.getElementById('summary-discount').innerText = `${totalDiscount.toFixed(2)} $`;
-            document.getElementById('summary-vat').innerText = `${totalVat.toFixed(2)} $`;
-            document.getElementById('summary-total').innerText = `${grandTotal.toFixed(2)} $`;
+            document.getElementById('summary-discount').innerText = `TK{totalDiscount.toFixed(2)} $`;
+            document.getElementById('summary-vat').innerText = `TK{totalVat.toFixed(2)} $`;
+            document.getElementById('summary-total').innerText = `TK{grandTotal.toFixed(2)} $`;
             
             // Auto fill active amount received values
             if(document.getElementById('bill-receive-status').value === 'Paid') {
@@ -636,29 +637,29 @@
             select.innerHTML = '<option value="">Select Product Manually</option>';
 
             items.forEach((item, index) => {
-                select.innerHTML += `<option value="${index}">${item.name} (${item.qty} ${item.unit})</option>`;
+                select.innerHTML += `<option value="${index}">TK{item.name} (${item.qty} TK{item.unit})</option>`;
                 tbody.innerHTML += `
                     <tr class="text-sm">
-                        <td class="p-4"><strong>${item.name}</strong><br><span class="text-xs text-slate-400 font-mono">SKU: ${item.barcode}</span></td>
-                        <td class="p-4">${item.qty} ${item.unit}</td>
-                        <td class="p-4">${item.buy.toFixed(2)} $</td>
-                        <td class="p-4 font-semibold text-indigo-600">${item.sell.toFixed(2)} $</td>
-                        <td class="p-4 text-red-500">-${item.discount.toFixed(2)} $</td>
-                        <td class="p-4 text-amber-500">+${item.vat}%</td>
-                        <td class="p-4 text-emerald-600">${item.gift || '-'}</td>
+                        <td class="p-4"><strong>TK{item.name}</strong><br><span class="text-xs text-slate-400 font-mono">SKU: TK{item.barcode}</span></td>
+                        <td class="p-4">TK{item.qty} TK{item.unit}</td>
+                        <td class="p-4">TK{item.buy.toFixed(2)} TK</td>
+                        <td class="p-4 font-semibold text-indigo-600">TK{item.sell.toFixed(2)} TK</td>
+                        <td class="p-4 text-red-500">-TK{item.discount.toFixed(2)} TK</td>
+                        <td class="p-4 text-amber-500">+TK{item.vat}%</td>
+                        <td class="p-4 text-emerald-600">TK{item.gift || '-'}</td>
                         <td class="p-4 text-center">
                             <div class="flex flex-col items-center bg-white p-1 rounded border border-slate-100">
-                                <svg id="barcode-${item.barcode}"></svg>
-                                <button onclick="downloadBarcodeImage('${item.barcode}')" class="text-[11px] text-indigo-600 mt-1 hover:underline font-bold">📥 Download Barcode</button>
+                                <svg id="barcode-TK{item.barcode}"></svg>
+                                <button onclick="downloadBarcodeImage('TK{item.barcode}')" class="text-[11px] text-indigo-600 mt-1 hover:underline font-bold">📥 Download Barcode</button>
                             </div>
                         </td>
                         <td class="p-4 text-center">
-                            <button onclick="dbUsers[activeUser].inventory.splice(${index},1); saveToLocalStorage(); renderInventory();" class="text-red-500 font-semibold">Delete</button>
+                            <button onclick="dbUsers[activeUser].inventory.splice(TK{index},1); saveToLocalStorage(); renderInventory();" class="text-red-500 font-semibold">Delete</button>
                         </td>
                     </tr>`;
                 
                 setTimeout(() => {
-                    JsBarcode(`#barcode-${item.barcode}`, item.barcode, { format: "CODE128", width: 1.1, height: 28, displayValue: false });
+                    JsBarcode(`#barcode-TK{item.barcode}`, item.barcode, { format: "CODE128", width: 1.1, height: 28, displayValue: false });
                 }, 10);
             });
         }
@@ -752,17 +753,17 @@
                 totalVatCalculated += ((item.rawSell - item.rawDiscount) * (item.rawVat / 100) * item.qty);
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-100">
-                        <td class="py-1 text-left">${item.name}<br><span class="text-[9px] text-slate-500">${item.gift ? '*Gift: '+item.gift : ''}</span></td>
-                        <td class="py-1 text-right">${item.qty} ${item.unit}</td>
-                        <td class="py-1 text-right">${item.rawSell.toFixed(2)}</td>
-                        <td class="py-1 text-right">${item.total.toFixed(2)}</td>
+                        <td class="py-1 text-left">TK{item.name}<br><span class="text-[9px] text-slate-500">${item.gift ? '*Gift: '+item.gift : ''}</span></td>
+                        <td class="py-1 text-right">TK{item.qty} TK{item.unit}</td>
+                        <td class="py-1 text-right">TK{item.rawSell.toFixed(2)}</td>
+                        <td class="py-1 text-right">TK{item.total.toFixed(2)}</td>
                     </tr>`;
             });
 
             document.getElementById('bill-total-price').innerHTML = `
-                <div>Total Discount: -${totalDiscountCalculated.toFixed(2)} $</div>
-                <div>Total VAT: +${totalVatCalculated.toFixed(2)} $</div>
-                <div class="text-sm font-bold text-black border-t border-dotted pt-1 mt-1">Grand Total: ${totalBill.toFixed(2)} $</div>`;
+                <div>Total Discount: -TK{totalDiscountCalculated.toFixed(2)} TK</div>
+                <div>Total VAT: +TK{totalVatCalculated.toFixed(2)} TK</div>
+                <div class="text-sm font-bold text-black border-t border-dotted pt-1 mt-1">Grand Total: TK{totalBill.toFixed(2)} TK</div>`;
             
             document.getElementById('bill-paid-price').innerText = paidAmount.toFixed(2);
             document.getElementById('bill-due-price').innerText = dueAmount.toFixed(2);
@@ -786,21 +787,21 @@
                 s+=st.total; r+=st.paid; d+=st.due;
                 tbody.innerHTML += `
                     <tr class="text-sm">
-                        <td class="p-4">${st.date}</td>
-                        <td class="p-4 font-bold">${st.total.toFixed(2)} $</td>
-                        <td class="p-4 text-emerald-600">${st.paid.toFixed(2)} $</td>
-                        <td class="p-4 text-rose-500">${st.due.toFixed(2)} $</td>
-                        <td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-100">${st.method}</span></td>
+                        <td class="p-4">TK{st.date}</td>
+                        <td class="p-4 font-bold">TK{st.total.toFixed(2)} TK</td>
+                        <td class="p-4 text-emerald-600">TK{st.paid.toFixed(2)} TK</td>
+                        <td class="p-4 text-rose-500">TK{st.due.toFixed(2)} TK</td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-100">TK{st.method}</span></td>
                     </tr>`;
             });
-            document.getElementById('widget-total-sales').innerText = `${s.toFixed(2)} $`;
-            document.getElementById('widget-total-received').innerText = `${r.toFixed(2)} $`;
-            document.getElementById('widget-total-due').innerText = `${d.toFixed(2)} $`;
+            document.getElementById('widget-total-sales').innerText = `TK{s.toFixed(2)} $`;
+            document.getElementById('widget-total-received').innerText = `TK{r.toFixed(2)} $`;
+            document.getElementById('widget-total-due').innerText = `TK{d.toFixed(2)} $`;
         }
 
         function handleDownloadCSV() {
             let csv = 'Timestamp,Gross Total,Paid Amount,Due,Method\n';
-            (dbUsers[activeUser].statements || []).forEach(st => { csv += `"${st.date}",${st.total},${st.paid},${st.due},"${st.method}"\n`; });
+            (dbUsers[activeUser].statements || []).forEach(st => { csv += `"TK{st.date}",TK{st.total},TK{st.paid},TK{st.due},"TK{st.method}"\n`; });
             const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csv], { type: 'text/csv;' });
             const lnk = document.createElement("a"); lnk.href = URL.createObjectURL(blob); lnk.download = 'Statement.csv'; lnk.click();
         }
